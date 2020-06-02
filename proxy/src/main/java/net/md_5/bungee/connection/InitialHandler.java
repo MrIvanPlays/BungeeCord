@@ -154,7 +154,7 @@ public class InitialHandler extends PacketHandler implements PendingConnection
     public void handle(PluginMessage pluginMessage) throws Exception
     {
         // TODO: Unregister?
-        if ( PluginMessage.SHOULD_RELAY.apply( pluginMessage ) )
+        if ( PluginMessage.SHOULD_RELAY.test( pluginMessage ) )
         {
             relayMessages.add( pluginMessage );
         }
