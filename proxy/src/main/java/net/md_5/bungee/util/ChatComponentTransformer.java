@@ -1,6 +1,7 @@
 package net.md_5.bungee.util;
 
 import com.google.common.base.Preconditions;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -63,7 +64,7 @@ public final class ChatComponentTransformer
         {
             if ( root.getExtra() != null && !root.getExtra().isEmpty() )
             {
-                List<BaseComponent> list = Arrays.asList( transform( player, root.getExtra().toArray( new BaseComponent[root.getExtra().size()] ) ) );
+                List<BaseComponent> list = new ArrayList<>( Arrays.asList( transform( player, root.getExtra().toArray( new BaseComponent[root.getExtra().size()] ) ) ) );
                 root.setExtra( list );
             }
 
