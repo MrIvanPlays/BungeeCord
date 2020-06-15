@@ -1,6 +1,5 @@
 package net.md_5.bungee.api;
 
-import com.google.common.io.BaseEncoding;
 import com.google.gson.TypeAdapter;
 import com.google.gson.internal.bind.TypeAdapters;
 import com.google.gson.stream.JsonReader;
@@ -8,6 +7,7 @@ import com.google.gson.stream.JsonWriter;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import javax.imageio.ImageIO;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -79,7 +79,7 @@ public class Favicon
         }
 
         // encode with header
-        String encoded = "data:image/png;base64," + BaseEncoding.base64().encode( imageBytes );
+        String encoded = "data:image/png;base64," + Base64.getEncoder().encodeToString( imageBytes );
 
         // check encoded image size
         if ( encoded.length() > Short.MAX_VALUE )
