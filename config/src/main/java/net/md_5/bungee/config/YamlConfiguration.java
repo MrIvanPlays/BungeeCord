@@ -1,6 +1,5 @@
 package net.md_5.bungee.config;
 
-import com.google.common.base.Charsets;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import lombok.AccessLevel;
@@ -24,36 +24,32 @@ import org.yaml.snakeyaml.representer.Representer;
 public class YamlConfiguration extends ConfigurationProvider
 {
 
-    private final ThreadLocal<Yaml> yaml = new ThreadLocal<Yaml>()
+    private final ThreadLocal<Yaml> yaml = ThreadLocal.withInitial( () ->
     {
-        @Override
-        protected Yaml initialValue()
+        Representer representer = new Representer()
         {
-            Representer representer = new Representer()
             {
+                representers.put( Configuration.class, new Represent()
                 {
-                    representers.put( Configuration.class, new Represent()
+                    @Override
+                    public Node representData(Object data)
                     {
-                        @Override
-                        public Node representData(Object data)
-                        {
-                            return represent( ( (Configuration) data ).self );
-                        }
-                    } );
-                }
-            };
+                        return represent( ( (Configuration) data ).self );
+                    }
+                } );
+            }
+        };
 
-            DumperOptions options = new DumperOptions();
-            options.setDefaultFlowStyle( DumperOptions.FlowStyle.BLOCK );
+        DumperOptions options = new DumperOptions();
+        options.setDefaultFlowStyle( DumperOptions.FlowStyle.BLOCK );
 
-            return new Yaml( new Constructor(), representer, options );
-        }
-    };
+        return new Yaml( new Constructor(), representer, options );
+    } );
 
     @Override
     public void save(Configuration config, File file) throws IOException
     {
-        try ( Writer writer = new OutputStreamWriter( new FileOutputStream( file ), Charsets.UTF_8 ) )
+        try ( Writer writer = new OutputStreamWriter( new FileOutputStream( file ), StandardCharsets.UTF_8 ) )
         {
             save( config, writer );
         }

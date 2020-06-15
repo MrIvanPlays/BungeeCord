@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.TimerTask;
 import net.md_5.bungee.api.ProxyServer;
 
@@ -129,6 +130,6 @@ public class Metrics extends TimerTask
      */
     private static String encode(final String text) throws UnsupportedEncodingException
     {
-        return URLEncoder.encode( text, "UTF-8" );
+        return URLEncoder.encode( text, StandardCharsets.UTF_8.name() );
     }
 }

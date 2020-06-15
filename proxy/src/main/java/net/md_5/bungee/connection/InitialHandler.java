@@ -1,14 +1,15 @@
 package net.md_5.bungee.connection;
 
-import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import java.math.BigInteger;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.logging.Level;
 import javax.crypto.SecretKey;
@@ -422,19 +423,19 @@ public class InitialHandler extends PacketHandler implements PendingConnection
         BungeeCipher encrypt = EncryptionUtil.getCipher( true, sharedKey );
         ch.addBefore( PipelineUtils.FRAME_PREPENDER, PipelineUtils.ENCRYPT_HANDLER, new CipherEncoder( encrypt ) );
 
-        String encName = URLEncoder.encode( InitialHandler.this.getName(), "UTF-8" );
+        String encName = URLEncoder.encode( InitialHandler.this.getName(), StandardCharsets.UTF_8.name() );
 
         MessageDigest sha = MessageDigest.getInstance( "SHA-1" );
         for ( byte[] bit : new byte[][]
         {
-            request.getServerId().getBytes( "ISO_8859_1" ), sharedKey.getEncoded(), EncryptionUtil.keys.getPublic().getEncoded()
+            request.getServerId().getBytes( StandardCharsets.ISO_8859_1 ), sharedKey.getEncoded(), EncryptionUtil.keys.getPublic().getEncoded()
         } )
         {
             sha.update( bit );
         }
-        String encodedHash = URLEncoder.encode( new BigInteger( sha.digest() ).toString( 16 ), "UTF-8" );
+        String encodedHash = URLEncoder.encode( new BigInteger( sha.digest() ).toString( 16 ), StandardCharsets.UTF_8.name() );
 
-        String preventProxy = ( BungeeCord.getInstance().config.isPreventProxyConnections() && getSocketAddress() instanceof InetSocketAddress ) ? "&ip=" + URLEncoder.encode( getAddress().getAddress().getHostAddress(), "UTF-8" ) : "";
+        String preventProxy = ( BungeeCord.getInstance().config.isPreventProxyConnections() && getSocketAddress() instanceof InetSocketAddress ) ? "&ip=" + URLEncoder.encode( getAddress().getAddress().getHostAddress(), StandardCharsets.UTF_8.name() ) : "";
         String authURL = "https://sessionserver.mojang.com/session/minecraft/hasJoined?username=" + encName + "&serverId=" + encodedHash + preventProxy;
 
         Callback<String> handler = new Callback<String>()
@@ -497,7 +498,7 @@ public class InitialHandler extends PacketHandler implements PendingConnection
 
         }
 
-        offlineId = UUID.nameUUIDFromBytes( ( "OfflinePlayer:" + getName() ).getBytes( Charsets.UTF_8 ) );
+        offlineId = UUID.nameUUIDFromBytes( ( "OfflinePlayer:" + getName() ).getBytes( StandardCharsets.UTF_8 ) );
         if ( uniqueId == null )
         {
             uniqueId = offlineId;

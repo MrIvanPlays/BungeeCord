@@ -1,6 +1,5 @@
 package net.md_5.bungee.module.cmd.send;
 
-import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableSet;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,7 +50,7 @@ public class CommandSend extends Command implements TabExecutor
                 if ( !entry.getValue().isEmpty() )
                 {
                     builder.event( new HoverEvent( HoverEvent.Action.SHOW_TEXT,
-                            new ComponentBuilder( Joiner.on( ", " ).join( entry.getValue() ) ).color( ChatColor.YELLOW ).create() ) );
+                            new ComponentBuilder( String.join( ", ", entry.getValue() ) ).color( ChatColor.YELLOW ).create() ) );
                 }
                 builder.append( entry.getKey().name() + ": " ).color( ChatColor.GREEN );
                 builder.append( "" + entry.getValue().size() ).bold( true );
