@@ -406,7 +406,7 @@ public class DownstreamBridge extends PacketHandler
                     if ( server != null )
                     {
                         out.writeUTF( server.getName() );
-                        out.writeUTF( bungee.getPlayers().stream().map( ProxiedPlayer::getName ).collect( Collectors.joining(", ") ) );
+                        out.writeUTF( bungee.getPlayers().stream().map( ProxiedPlayer::getName ).collect( Collectors.joining( ", " ) ) );
                     }
                 }
             }
