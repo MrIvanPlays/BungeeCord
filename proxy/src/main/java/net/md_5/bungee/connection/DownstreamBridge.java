@@ -399,14 +399,14 @@ public class DownstreamBridge extends PacketHandler
                 if ( target.equals( "ALL" ) )
                 {
                     out.writeUTF( "ALL" );
-                    out.writeUTF( Util.csv( bungee.getPlayers() ) );
+                    out.writeUTF( bungee.getPlayers().stream().map( ProxiedPlayer::getName ).collect( Collectors.joining( ", " ) ) );
                 } else
                 {
                     ServerInfo server = bungee.getServerInfo( target );
                     if ( server != null )
                     {
                         out.writeUTF( server.getName() );
-                        out.writeUTF( Util.csv( server.getPlayers() ) );
+                        out.writeUTF( bungee.getPlayers().stream().map( ProxiedPlayer::getName ).collect( Collectors.joining(", ") ) );
                     }
                 }
             }
