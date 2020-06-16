@@ -25,12 +25,9 @@ public class JenkinsModuleSource implements ModuleSource
             con.setConnectTimeout( 15000 );
             con.setReadTimeout( 15000 );
 
-            try ( InputStream is = con.getInputStream() )
+            try ( InputStream in = con.getInputStream() )
             {
-                Files.copy( is, module.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING );
-            } finally
-            {
-                System.out.println( "Download complete" );
+                Files.copy( in, module.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING );
             }
         } catch ( IOException ex )
         {
