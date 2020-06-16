@@ -29,6 +29,7 @@ public class JenkinsModuleSource implements ModuleSource
             {
                 Files.copy( in, module.getFile().toPath(), StandardCopyOption.REPLACE_EXISTING );
             }
+            System.out.println( "Download complete" );
         } catch ( IOException ex )
         {
             System.out.println( "Failed to download: " + Util.exception( ex ) );
