@@ -23,7 +23,15 @@ public class BungeeScheduler implements TaskScheduler
     private final TIntObjectMap<BungeeTask> tasks = TCollections.synchronizedMap( new TIntObjectHashMap<BungeeTask>() );
     private final Multimap<Plugin, BungeeTask> tasksByPlugin = Multimaps.synchronizedMultimap( HashMultimap.<Plugin, BungeeTask>create() );
     //
-    private final Unsafe unsafe = Plugin::getExecutorService;
+    private final Unsafe unsafe = new Unsafe()
+    {
+
+        @Override
+        public ExecutorService getExecutorService(Plugin plugin)
+        {
+            return plugin.getExecutorService();
+        }
+    };
 
     @Override
     public void cancel(int id)
